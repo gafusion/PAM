@@ -1,0 +1,2 @@
+['pam.in'] <-:-:-> OMFITnamelist <-:-:-> ./pam.in <-:-:-> {}
+['gEQDSK'] <-:-:-> OMFITgeqdsk <-:-:-> ./geqdsk_3m <-:-:-> {}

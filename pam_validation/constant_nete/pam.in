@@ -1,0 +1,117 @@
+ &input
+ time_start = 1.0
+ time_end = 4.0
+ dt = 0.01
+ numPelletTypes = 1
+ coupled = .false.
+ field = 2
+ ntheta = 200
+ ntransport = 201
+ save2Ddata = .true.
+ generateODS = .false.
+ updateODS = .false.
+ Bt_exp = -0.35
+ btDepend = .false.
+ save_time_data = .true.
+ use_aurora = .false.
+ update_plasma = .false.
+ /
+ &equilibrium
+ rho = 0.0 0.005 0.01 0.015 0.02 0.025 0.03 0.035 0.04 0.045 0.05 0.055 0.06 
+ 0.065 0.07 0.075 0.08 0.085 0.09 0.095 0.1 0.105 0.11 0.115 0.12 0.125 0.13 
+ 0.135 0.14 0.145 0.15 0.155 0.16 0.165 0.17 0.17500000000000002 0.18 0.185 
+ 0.19 0.195 0.2 0.20500000000000002 0.21 0.215 0.22 0.225 0.23 
+ 0.23500000000000001 0.24 0.245 0.25 0.255 0.26 0.265 0.27 0.275 0.28 
+ 0.28500000000000003 0.29 0.295 0.3 0.305 0.31 0.315 0.32 0.325 0.33 0.335 
+ 0.34 0.34500000000000003 0.35000000000000003 0.355 0.36 0.365 0.37 0.375 
+ 0.38 0.385 0.39 0.395 0.4 0.405 0.41000000000000003 0.41500000000000004 0.42 
+ 0.425 0.43 0.435 0.44 0.445 0.45 0.455 0.46 0.465 0.47000000000000003 
+ 0.47500000000000003 0.48 0.485 0.49 0.495 0.5 0.505 0.51 0.515 0.52 0.525 
+ 0.53 0.535 0.54 0.545 0.55 0.555 0.56 0.5650000000000001 0.5700000000000001 
+ 0.5750000000000001 0.58 0.585 0.59 0.595 0.6 0.605 0.61 0.615 0.62 0.625 
+ 0.63 0.635 0.64 0.645 0.65 0.655 0.66 0.665 0.67 0.675 0.68 0.685 
+ 0.6900000000000001 0.6950000000000001 0.7000000000000001 0.705 0.71 0.715 
+ 0.72 0.725 0.73 0.735 0.74 0.745 0.75 0.755 0.76 0.765 0.77 0.775 0.78 0.785 
+ 0.79 0.795 0.8 0.805 0.81 0.8150000000000001 0.8200000000000001 
+ 0.8250000000000001 0.8300000000000001 0.835 0.84 0.845 0.85 0.855 0.86 0.865 
+ 0.87 0.875 0.88 0.885 0.89 0.895 0.9 0.905 0.91 0.915 0.92 0.925 0.93 0.935 
+ 0.9400000000000001 0.9450000000000001 0.9500000000000001 0.9550000000000001 
+ 0.96 0.965 0.97 0.975 0.98 0.985 0.99 0.995 1.0
+ ne = 201*1.0
+ Te = 201*2.0
+ Zeff = 201*2.0
+ /
+ &pellet1
+ nlayers = 1
+  &layer1
+  ncomponents = 2
+  model = 'dt'
+  ratiolist = 2*0.5
+  complist = 'd' 't'
+  thickness = 0.2
+  /
+ velocity = 20.0 400.0 0.0
+ vcoordsys = 2
+ position = 2.0 -1.0 0.0
+ pcoordsys = 2
+ dt = 0.01
+ injection_times(1) = 0.0
+ Rshift = 'Parks simplified'
+ source_model = '2DGaussian'
+ cloudFactorZ = 8
+ cloudFactorR = 8
+ cloudFactor = 8
+ xpo = 2
+ cloud_delay = 0.0
+  &layer2
+  ncomponents = 2
+  thickness = 0.0
+  model = 'dt'
+  ratiolist = 2*0.5
+  complist = 'd' 't'
+  /
+ cloud_mach = 1.0
+ c_perp = 0.02
+ /
+ &pellet2
+ nlayers = 2
+  &layer1
+  ncomponents = 2
+  model = 'dt'
+  ratiolist = 2*0.5
+  complist = 'd' 't'
+  thickness = 0.1
+  /
+ complist = 't' 'd' 'C'
+ ratiolist = 2*0.5 1.0
+ velocity = -200.0 2*0.0
+ vcoordsys = 2
+ position = 2.25 2*0.0
+ pcoordsys = 2
+ dt = 0.01
+ injection_times = 3981.0 3982.0
+ source_model = '2DGaussian'
+ Rshift = 'Parks simplified'
+ cloudFactorZ = 8.0
+ xpo = 2
+ cloudFactorR = 8.0
+ cloudFactor = 8
+ cloud_pressure_factor = 9.0
+ cloud_length = 0.25
+ cloud_density = 1e+25
+ cloud_delay = 0.0
+  &layer2
+  ncomponents = 1
+  thickness = 0.004
+  model = 'C'
+  ratiolist(1) = 1.0
+  complist(1) = 'C'
+  /
+ /
+ &aurora
+ n_rep = 2
+ dt = 2e-05
+ D_z = 1000.0
+ V_z = -20.0
+ k_z = 1000.0
+ /

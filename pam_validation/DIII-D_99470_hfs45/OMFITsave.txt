@@ -1,0 +1,3 @@
+['pam.in'] <-:-:-> OMFITnamelist <-:-:-> ./pam.in <-:-:-> {}
+['gEQDSK'] <-:-:-> OMFITgeqdsk <-:-:-> ./g099470.01997 <-:-:-> {}
+['exp_data'] <-:-:-> OMFITasciitable <-:-:-> ./exp_data.py <-:-:-> {}
