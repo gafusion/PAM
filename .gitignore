@@ -1,0 +1,7 @@
+.vscode/
+tmp/
+venv_pam/
+pam.egg-info/
+__pycache__
+*.png
+build/
