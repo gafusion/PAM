@@ -185,8 +185,6 @@ def rpdot(y, t, ipel, it=None, update=False):
 
     if update:
         func.compile_ablation_data(treelocs, R, Z, rho, Te, ne, y[ipel], Gd, Gt, GC, GNe, ipel, it)
-        pdrm.get_shift(drhodR, drhodZ, rho2ds, it)
-        pdm.update_densities(drhodR, drhodZ, rho2ds, it)
 
     return drpdt
 
@@ -213,6 +211,10 @@ def rpdot_all(t, y, it=None, update=False):
     drpdt = np.zeros_like(y)
     for ipel in range(len(y)):
         drpdt[ipel] = rpdot(y, t, ipel, it=it, update=update)
+
+    if update:
+        pdrm.get_shift(drhodR, drhodZ, rho2ds, it)
+        pdm.update_densities(drhodR, drhodZ, rho2ds, it)
     return drpdt
 
 

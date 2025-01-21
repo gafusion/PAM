@@ -186,3 +186,32 @@ def pellet_parks(ycm, Te, ne):
     # ((loglamH**0.666) *4*z_pi*(2*(denm_pl * 1e-6)))
 
     return drpdt
+
+def sergeev_lithium(Te, ne, ycm):
+    """
+    This function calculates the ablation from a lithium pellet
+
+    :param Te: electron temperature (keV)
+    :param ne: electron density (1e20 m^-3)
+    :param ycm: pellet radius (cm)
+
+    """
+
+    # Reference for lithium ablation model:
+    # Sergeev, et al, Plasma Physics Reports 32, 363-377 (2006)
+    # Equation 14 and Table 1 values of a,b,c and K for Li are used
+
+    Te = Te * 1e3  # eV
+    ne = ne * 1e14  # /cc
+    WLi = pei.getAtomicWeight(['Li'], [1])
+
+    rabl = 2.7e13 * (Te ** (1.562)) * (ne**0.497) * (ycm**1.497)  # atoms/sec
+
+    G = rabl * WLi / pei.avog  # g/sec
+
+    if ycm < 0:
+        drpdt = 0.0
+    else:
+        drpdt = -G / (4.0 * np.pi * pei.getDensity(['Li'], [1]) * ycm * ycm)
+        drpdt *= 1e-3  # cm/s to cm/ms
+    return drpdt
