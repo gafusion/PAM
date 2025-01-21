@@ -33,14 +33,20 @@ def update_density_2DGaussian(current_pellet, pellet_name, specie, drhodR, drhod
     cloud_delay = root['INPUTS']['pam.in'][pellet_name]['cloud_delay']
     vR, vZ, vphi = pei.getInitVelocity(root['INPUTS']['pam.in'][pellet_name])
     shiftR = current_pellet['shiftR'][it]
+    rigid_shift = root['INPUTS']['pam.in'][pellet_name]['rigid_shift']
+
 
     if current_pellet['rcloud'][it] > 0:
-
         rcloudR = current_pellet['rcloud'][it]
         rcloudZ = current_pellet['rcloud'][it]  #
     else:
         rcloudR = cloudFactorR * current_pellet['rPellet'][0] * 1e-2
         rcloudZ = cloudFactorZ * current_pellet['rPellet'][0] * 1e-2
+
+    if rcloudR < cloudFactorR * current_pellet['rPellet'][0] * 1e-2:
+        rcloudR = cloudFactorR * current_pellet['rPellet'][0] * 1e-2
+        rcloudZ = cloudFactorZ * current_pellet['rPellet'][0] * 1e-2
+
     pelletpath_R = current_pellet['R'][it] - cloud_delay * rcloudR * vR / np.hypot(vR, vZ)
     pelletpath_Z = current_pellet['Z'][it] - cloud_delay * rcloudZ * vZ / np.hypot(vR, vZ)
     current_pellet['Rdep'][it] = pelletpath_R
@@ -50,11 +56,13 @@ def update_density_2DGaussian(current_pellet, pellet_name, specie, drhodR, drhod
     Z = root['OUTPUTS']['plasma']['Zgrid']
 
     nsource = np.exp(
-        -0.5 * ((pelletpath_R - R + 0.5 * shiftR) ** xpo / (rcloudR + 0.25 * shiftR) ** xpo + (pelletpath_Z - Z) ** xpo / rcloudZ**xpo)
-    )
-
+       -0.5
+        * (
+            (pelletpath_R - R + 0.5 * shiftR) ** xpo / (rcloudR + 0.25 * (1.0 - rigid_shift) * shiftR) ** xpo
+            + (pelletpath_Z - Z) ** xpo / rcloudZ**xpo
+        ))
     # normalisation is valid only for xpo == 2
-    nsource /= (2 * np.pi) ** 2 * (rcloudR + 0.25 * shiftR) * (pelletpath_R + 0.5 * shiftR) * rcloudZ
+    nsource /= (2 * pi) ** 2 * (rcloudR + 0.25 * (1.0 - rigid_shift) * shiftR) * (pelletpath_R + 0.5 * shiftR) * rcloudZ
 
     nsource *= current_pellet['G' + specie][it]
     modBp = root['OUTPUTS']['plasma']['modBp']

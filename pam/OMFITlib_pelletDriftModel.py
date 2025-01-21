@@ -186,6 +186,8 @@ def get_shift(drhodR, drhodZ, rho2ds, it):
                 current_pellet['shiftR'][it] = getShift_PRL(current_pellet)
             elif model == 'HPI2 scaling':
                 current_pellet['shiftR'][it] = getShift_HPI2_scaling(current_pellet, pellet_name)
+            elif model == 'Matsuyama':
+                current_pellet['shiftR'][it] = getShift_Matsuyama(current_pellet, pellet_name, it)
             elif model == 'Parks simplified':
                 cloud_mach = pamin['cloud_mach']
                 c_perp = pamin['c_perp']
@@ -271,3 +273,21 @@ def getShift_HPI2_scaling(current_pellet, pellet_name):
     shiftR *= (1 - lam) ** c9 * a0**c10 * R0**c11 * B0**c12 * kappa**c13
 
     return shiftR
+
+def getShift_Matsuyama(current_pellet, pellet_name, it):
+    Te = [0, 725, 1000, 2000, 5000, 10000, 20000]
+    fracNe = 1 - np.array([1, 0.98, 0.9, 0.81, 0])
+    Delta_M = [
+        [0, 0.297, 0.525, 1.05, 2.055, 3.45, 10],
+        [0, 0.073, 0.1, 0.213, 0.5, 0.835, 1.26],
+        [0, 0.046, 0.077, 0.17, 0.413, 0.65, 0.92],
+        [0, 0.039, 0.065, 0.15, 0.36, 0.57, 0.76],
+        [0, 0.0256, 0.04, 0.08, 0.165, 0.232, 0.297],
+    ]
+
+    Delta_M_interp = scipy.interpolate.interp2d(Te, fracNe, Delta_M)
+    fracNe = root['INPUTS']['pam.in'][pellet_name]['layer1']['ratiolist'][0]
+    Te = current_pellet['Te'][it] * 1000
+    shiftR = Delta_M_interp(Te, fracNe)
+
+    return 0.5 * shiftR
