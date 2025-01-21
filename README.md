@@ -8,3 +8,12 @@ and computes a predicted pellet ablation and density source.
 * input desired pellet information
 
 * compute pellet ablation and density source
+
+## Running PAM
+
+Place the files needed in the current folder (see the `pam_validation` folder).
+
+To execute PAM run in that folder:
+```
+python3.7 ../pam/run_pam.py
+```
