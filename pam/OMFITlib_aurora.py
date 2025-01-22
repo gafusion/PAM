@@ -145,7 +145,6 @@ def run_aurora(it):
     :param it: iteration
 
     """
-    print('in aurora', it)
     pamin = root['INPUTS']['pam.in']
     output = root['OUTPUTS']['aurora']
     plasma = root['OUTPUTS']['plasma']
@@ -167,7 +166,10 @@ def run_aurora(it):
 
     # guess of transport coefficients
     D = pamin['aurora']['D_z'] * np.ones_like(output['rhop']) * 1e4  # cm^2/s
-    V = pamin['aurora']['drift_parameter'] * 2 * D * output['rvol'] / rlcfs**2  # cm/s
+    # determine V/D to mach input electron density profile
+    ne0 = np.interp(output['rhop'], rhop, np.maximum(plasma['ne_time'][0], 1e-5))
+    VoverD = np.gradient(np.log(ne0), output['rvol'])  # cm^-1
+    V = VoverD * D
 
     if pamin['aurora'].get('cxr_flag', False):
         # neutral density profile [cm^-3]

@@ -62,7 +62,7 @@ def update_density_2DGaussian(current_pellet, pellet_name, specie, drhodR, drhod
             + (pelletpath_Z - Z) ** xpo / rcloudZ**xpo
         ))
     # normalisation is valid only for xpo == 2
-    nsource /= (2 * pi) ** 2 * (rcloudR + 0.25 * (1.0 - rigid_shift) * shiftR) * (pelletpath_R + 0.5 * shiftR) * rcloudZ
+    nsource /= (2 * np.pi) ** 2 * (rcloudR + 0.25 * (1.0 - rigid_shift) * shiftR) * (pelletpath_R + 0.5 * shiftR) * rcloudZ
 
     nsource *= current_pellet['G' + specie][it]
     modBp = root['OUTPUTS']['plasma']['modBp']

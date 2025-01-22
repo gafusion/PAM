@@ -72,6 +72,7 @@
   /
  cloud_mach = 1.0
  c_perp = 0.02
+ rigid_shift = 0.0
  /
  &pellet2
  nlayers = 2
@@ -107,6 +108,7 @@
   ratiolist(1) = 1.0
   complist(1) = 'C'
   /
+ rigid_shift = 0.0
  /
  &aurora
  n_rep = 2

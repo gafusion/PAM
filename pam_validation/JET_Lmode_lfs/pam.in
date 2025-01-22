@@ -103,6 +103,7 @@
  cloudFactor = 8
  xpo = 2
  cloud_delay = 0.0
+ rigid_shift = 0.0
   &layer2
   ncomponents = 2
   thickness = 0.0
